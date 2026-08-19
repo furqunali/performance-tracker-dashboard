@@ -1,0 +1,242 @@
+// Demo seed data for the Performance Tracker.
+// Entirely fictional — "Meridian Group" is a sample enterprise used to
+// showcase the dashboard. No real company data is included.
+
+export const CURRENT_USER = {
+  id: 'user_demo',
+  full_name: 'Alex Morgan',
+  email: 'alex.morgan@meridian-demo.com',
+  role: 'admin', // 'admin' unlocks Admin Settings; switchable in the UI
+  department: 'Executive',
+};
+
+export const CORPORATE_GOALS = [
+  {
+    id: 'cg_1',
+    title: 'Grow total revenue',
+    category: 'Financial',
+    kpi: 'YoY revenue growth',
+    target_percentage: 100,
+    current_percentage: 96,
+    owner: 'Finance',
+    trend: [78, 82, 85, 88, 91, 96],
+  },
+  {
+    id: 'cg_2',
+    title: 'Improve gross margin',
+    category: 'Financial',
+    kpi: 'Gross margin vs. plan',
+    target_percentage: 100,
+    current_percentage: 88,
+    owner: 'Operations',
+    trend: [70, 74, 79, 83, 85, 88],
+  },
+  {
+    id: 'cg_3',
+    title: 'Raise customer satisfaction',
+    category: 'Customer',
+    kpi: 'CSAT score attainment',
+    target_percentage: 100,
+    current_percentage: 92,
+    owner: 'Sales',
+    trend: [80, 83, 85, 87, 90, 92],
+  },
+  {
+    id: 'cg_4',
+    title: 'Strengthen workplace safety',
+    category: 'Operational',
+    kpi: 'Incident-free days target',
+    target_percentage: 100,
+    current_percentage: 99,
+    owner: 'Operations',
+    trend: [90, 92, 94, 96, 98, 99],
+  },
+  {
+    id: 'cg_5',
+    title: 'Advance sustainability program',
+    category: 'ESG',
+    kpi: 'Emissions reduction milestones',
+    target_percentage: 100,
+    current_percentage: 74,
+    owner: 'Corporate',
+    trend: [40, 48, 55, 62, 69, 74],
+  },
+  {
+    id: 'cg_6',
+    title: 'Expand market footprint',
+    category: 'Growth',
+    kpi: 'New locations opened vs. plan',
+    target_percentage: 100,
+    current_percentage: 68,
+    owner: 'Strategy',
+    trend: [30, 40, 48, 55, 61, 68],
+  },
+  {
+    id: 'cg_7',
+    title: 'Accelerate digital adoption',
+    category: 'Technology',
+    kpi: 'Automated processes vs. target',
+    target_percentage: 100,
+    current_percentage: 81,
+    owner: 'IT',
+    trend: [45, 55, 63, 70, 76, 81],
+  },
+  {
+    id: 'cg_8',
+    title: 'Reduce operating cost ratio',
+    category: 'Operational',
+    kpi: 'Opex-to-revenue improvement',
+    target_percentage: 100,
+    current_percentage: 77,
+    owner: 'Finance',
+    trend: [55, 60, 66, 70, 74, 77],
+  },
+];
+
+export const DEPARTMENTAL_GOALS = [
+  {
+    id: 'dg_1',
+    department: 'Operations',
+    goal_title: 'Cut average fulfillment time',
+    kpi: 'Avg. hours per order',
+    target: 24,
+    current_value: 21,
+    action_plan: 'Rollout of routing optimization',
+  },
+  {
+    id: 'dg_2',
+    department: 'Finance',
+    goal_title: 'Close books faster',
+    kpi: 'Days to close month',
+    target: 5,
+    current_value: 6,
+    action_plan: 'Automate reconciliations',
+  },
+  {
+    id: 'dg_3',
+    department: 'Sales',
+    goal_title: 'Increase repeat customers',
+    kpi: 'Repeat purchase rate %',
+    target: 60,
+    current_value: 57,
+    action_plan: 'Launch loyalty tier',
+  },
+  {
+    id: 'dg_4',
+    department: 'Human Resources',
+    goal_title: 'Lower voluntary attrition',
+    kpi: 'Annual attrition %',
+    target: 10,
+    current_value: 12,
+    action_plan: 'Career-path framework',
+  },
+  {
+    id: 'dg_5',
+    department: 'IT',
+    goal_title: 'Improve system uptime',
+    kpi: 'Uptime %',
+    target: 99.9,
+    current_value: 99.7,
+    action_plan: 'Redundancy upgrades',
+  },
+  {
+    id: 'dg_6',
+    department: 'Marketing',
+    goal_title: 'Grow qualified leads',
+    kpi: 'MQLs per month',
+    target: 800,
+    current_value: 742,
+    action_plan: 'Content + paid mix rebalance',
+  },
+];
+
+export const BUSINESS_SEGMENTS = [
+  { id: 'bs_1', name: 'Retail Fuel', code: 'RTL', current_percentage: 94 },
+  { id: 'bs_2', name: 'Wholesale Distribution', code: 'WHL', current_percentage: 88 },
+  { id: 'bs_3', name: 'Logistics & Fleet', code: 'LOG', current_percentage: 79 },
+  { id: 'bs_4', name: 'Convenience Retail', code: 'CVR', current_percentage: 91 },
+  { id: 'bs_5', name: 'Lubricants', code: 'LUB', current_percentage: 72 },
+  { id: 'bs_6', name: 'Real Estate', code: 'RES', current_percentage: 83 },
+];
+
+export const KPI_REPORTS = [
+  {
+    id: 'kr_1',
+    kpi_name: 'YoY revenue growth',
+    department: 'Finance',
+    reporting_period: 'Q2 2026',
+    percentage: 96,
+    created_by: 'alex.morgan@meridian-demo.com',
+    submitted_date: '2026-07-05',
+    notes: 'Strong retail fuel volume drove upside.',
+  },
+  {
+    id: 'kr_2',
+    kpi_name: 'Gross margin vs. plan',
+    department: 'Operations',
+    reporting_period: 'Q2 2026',
+    percentage: 88,
+    created_by: 'priya.nair@meridian-demo.com',
+    submitted_date: '2026-07-04',
+    notes: 'Freight costs stabilized.',
+  },
+  {
+    id: 'kr_3',
+    kpi_name: 'CSAT score attainment',
+    department: 'Sales',
+    reporting_period: 'Q2 2026',
+    percentage: 92,
+    created_by: 'daniel.cruz@meridian-demo.com',
+    submitted_date: '2026-07-03',
+    notes: 'Loyalty pilot well received.',
+  },
+  {
+    id: 'kr_4',
+    kpi_name: 'Uptime %',
+    department: 'IT',
+    reporting_period: 'Q2 2026',
+    percentage: 99,
+    created_by: 'sam.lee@meridian-demo.com',
+    submitted_date: '2026-07-02',
+    notes: 'One planned maintenance window.',
+  },
+  {
+    id: 'kr_5',
+    kpi_name: 'Emissions reduction milestones',
+    department: 'Operations',
+    reporting_period: 'Q2 2026',
+    percentage: 74,
+    created_by: 'priya.nair@meridian-demo.com',
+    submitted_date: '2026-07-01',
+    notes: 'Solar rollout behind schedule.',
+  },
+  {
+    id: 'kr_6',
+    kpi_name: 'MQLs per month',
+    department: 'Marketing',
+    reporting_period: 'Q2 2026',
+    percentage: 93,
+    created_by: 'jordan.kim@meridian-demo.com',
+    submitted_date: '2026-06-30',
+    notes: 'Paid channel efficiency improved.',
+  },
+];
+
+export const DEPARTMENTS = [
+  'Operations',
+  'Finance',
+  'Sales',
+  'Human Resources',
+  'IT',
+  'Marketing',
+  'Executive',
+];
+
+export const REPORTING_PERIODS = [
+  'Q1 2026',
+  'Q2 2026',
+  'Q3 2026',
+  'Q4 2026',
+];
+
+export const ORG_NAME = 'Meridian Group';
