@@ -11,9 +11,9 @@ import {
   KPI_REPORTS,
 } from './seed.js';
 
-const STORAGE_KEY = 'performance-tracker.v1';
+export const STORAGE_KEY = 'performance-tracker.v1';
 
-function seedState() {
+export function seedState() {
   return {
     user: { ...CURRENT_USER },
     corporateGoals: CORPORATE_GOALS.map((g) => ({ ...g })),
@@ -23,12 +23,41 @@ function seedState() {
   };
 }
 
+// A persisted blob is only trusted if it has the exact shape we expect.
+// A partial or tampered object is rejected so we never render against
+// half-valid state (which would crash components downstream).
+export function isValidState(s) {
+  return (
+    !!s &&
+    typeof s === 'object' &&
+    !!s.user &&
+    typeof s.user === 'object' &&
+    typeof s.user.role === 'string' &&
+    Array.isArray(s.corporateGoals) &&
+    Array.isArray(s.departmentalGoals) &&
+    Array.isArray(s.businessSegments) &&
+    Array.isArray(s.kpiReports)
+  );
+}
+
+// Pure, testable parser: returns valid state or null. Guards against both
+// malformed JSON (throws) and structurally invalid JSON (wrong shape).
+export function parseStored(raw) {
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    return isValidState(parsed) ? parsed : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 function load() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    const parsed = parseStored(localStorage.getItem(STORAGE_KEY));
+    if (parsed) return parsed;
   } catch (e) {
-    // ignore corrupt storage and reseed
+    // localStorage itself may be unavailable (e.g. blocked) — reseed.
   }
   return seedState();
 }
