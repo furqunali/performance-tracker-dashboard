@@ -2,6 +2,9 @@
 
 > A role-aware KPI & corporate-goals dashboard that gives leadership a single-screen view of enterprise performance — built as a self-contained static React SPA.
 
+[![CI](https://github.com/furqunali/performance-tracker-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/furqunali/performance-tracker-dashboard/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 **Live demo → https://slp-performance-tracker.vercel.app**
 
 The app ships with fully fictional sample data ("Meridian Group") and runs entirely in the browser — no backend, no sign-in. It is a portfolio demonstration of dashboard UX, data-viz discipline, and pragmatic front-end architecture.
@@ -75,6 +78,8 @@ flowchart TD
 | Charts | Recharts |
 | Icons | lucide-react |
 | State | `useSyncExternalStore` store shim + `localStorage` |
+| Testing | Vitest + React Testing Library + jsdom |
+| CI | GitHub Actions (Node 20: test + build) |
 
 ## 🧠 Engineering Decisions
 
@@ -82,6 +87,27 @@ flowchart TD
 - **`useSyncExternalStore` over a state library.** The app needs a single reactive source of truth shared across routes; React's built-in external-store hook covers that with no extra dependency and no provider tree, while `selector`-based reads keep re-renders scoped.
 - **Routing-level role gating.** Rather than only hiding admin UI, the admin route is guarded in `App.jsx` and redirects unauthorized roles — a closer match to how real authorization should behave.
 - **Data-viz discipline.** The categorical palette is CVD-safe and validated; the status ramp (on-track / watch / at-risk) is reserved and never reused as a categorical hue, so color always means the same thing across tiles, charts, and badges.
+- **Defensive persistence.** Because state is rehydrated from `localStorage`, it is treated as untrusted input: `parseStored` guards against both malformed JSON and structurally invalid blobs (wrong shape / missing collections) and falls back to a clean reseed rather than rendering against half-valid state. Forms validate required fields and clamp numeric ranges before anything reaches the store.
+- **Error boundary as a safety net.** A top-level React `ErrorBoundary` wraps the app so an unexpected render error shows a friendly, actionable fallback (with a "reload with fresh data" action) instead of a blank white screen.
+
+## 🧪 Testing & CI
+
+The store shim, role-gating, pure helpers, and rendering are covered by a
+[Vitest](https://vitest.dev/) + React Testing Library suite (`src/**/*.test.js{,x}`):
+
+- **Store CRUD & persistence** — add/update/delete goals and reports, role switching, seed reset, and that mutations persist so a reload rehydrates them.
+- **Storage resilience** — `parseStored` / `isValidState` reject malformed and structurally invalid JSON.
+- **Pure helpers** — `statusFor` thresholds and `segmentColor` palette wrap-around.
+- **Role gating** — an admin reaches `/admin-settings`; a manager is redirected and never sees the admin nav link.
+- **Rendering** — a Dashboard smoke render and an `ErrorBoundary` fallback test.
+
+```bash
+npm test          # vitest run (CI mode)
+npm run test:watch
+```
+
+Every push and pull request to `main` runs the suite and a production build on
+Node 20 via [GitHub Actions](.github/workflows/ci.yml).
 
 ## 📊 Results / Demo
 
@@ -96,9 +122,12 @@ npm install
 npm run dev      # start the dev server (http://localhost:5173)
 npm run build    # production build to /dist
 npm run preview  # preview the production build
+npm test         # run the test suite
 ```
 
-Deploys to any static host. On **Vercel** the defaults work out of the box (build command `npm run build`, output directory `dist`).
+## 🚢 Deployment
+
+Deploys to any static host. On **Vercel** the defaults work out of the box (build command `npm run build`, output directory `dist`). A [`vercel.json`](vercel.json) adds a SPA rewrite (`/(.*) → /index.html`) so deep links and hard refreshes on client-side routes such as `/admin-settings` resolve to the app instead of a 404. The live deployment is at **https://slp-performance-tracker.vercel.app**.
 
 ### Project structure
 
@@ -110,17 +139,22 @@ src/
   lib/
     theme.js     # validated categorical palette + status helpers
   components/
-    Layout.jsx   # top nav, role switcher, footer
-    GoalCard.jsx # progress-ring goal card
-    ui.jsx       # shared primitives (Card, StatTile, ProgressBar)
+    Layout.jsx        # top nav, role switcher, footer
+    GoalCard.jsx      # progress-ring goal card
+    ui.jsx            # shared primitives (Card, StatTile, ProgressBar)
+    ErrorBoundary.jsx # top-level render-error fallback
   pages/
     Dashboard.jsx
     SubmitReport.jsx
     MyReports.jsx
     AdminSettings.jsx
-  App.jsx        # routes + role guard
-  main.jsx       # entry
+  test/
+    setup.js          # Vitest setup (jest-dom, ResizeObserver stub)
+  App.jsx             # routes + role guard
+  main.jsx            # entry
 ```
+
+Tests live next to the code they cover as `*.test.js` / `*.test.jsx`.
 
 ## 🔒 Security & Data
 
@@ -133,7 +167,12 @@ src/
 - Export dashboard and reports to PDF/CSV.
 - Historical trend views per goal (the seed already carries a `trend` series).
 - Multi-user reports and per-department filtering.
-- Automated tests (component + store) and CI.
+- Broaden test coverage toward end-to-end (Playwright) flows.
+
+## 🤝 Contributing
+
+Contributions and suggestions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md)
+for the dev workflow, conventions, and PR checklist.
 
 ## 📄 License
 
